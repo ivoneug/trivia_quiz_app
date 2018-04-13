@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import { View } from 'react-native';
 import LocalizedStrings from 'react-native-localization';
+import { connect } from 'react-redux';
+import { categoryListFetch } from '../actions';
 import { Button } from './common';
 import About from './About';
 
 class MainMenu extends Component {
-    state = {
-        showAbout: false
+    componentDidMount() {
+        this.props.categoryListFetch();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
     }
 
     renderAbout() {
@@ -55,4 +61,10 @@ const strings = new LocalizedStrings({
     }
 });
 
-export default MainMenu;
+const mapStateToProps = (state) => {
+    return {
+        categories: state.categories
+    };
+};
+
+export default connect(mapStateToProps, { categoryListFetch })(MainMenu);
