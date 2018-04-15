@@ -24,6 +24,8 @@ class RouterComponent extends Component {
                     key='root'
                     activeBackgroundColor='black'
                     inactiveBackgroundColor='white'
+
+                    hideNavBar
                 >
                     <Scene
                         initial
