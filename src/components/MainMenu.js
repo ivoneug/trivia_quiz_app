@@ -6,10 +6,11 @@ import {
     Text,
     TouchableOpacity
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import LocalizedStrings from 'react-native-localization';
 import { connect } from 'react-redux';
 import { categoryListFetch } from '../actions';
-import { Button } from './common';
+import { Spinner } from './common';
 import About from './About';
 import { CategoryButton } from './CategoryButton';
 
@@ -19,7 +20,15 @@ class MainMenu extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
+        const { loaded } = nextProps;
+
+        if (loaded && loaded !== this.props.loaded) {
+            this.containerView.fadeIn(300);
+        }
+    }
+
+    selectCategory(categoryId) {
+
     }
 
     renderAbout() {
@@ -88,11 +97,9 @@ class MainMenu extends Component {
         });
     }
 
-    selectCategory(categoryId) {
-
-    }
-
     render() {
+        const { loaded } = this.props;
+
         const {
             titleBarIOS,
             containerStyle,
@@ -101,14 +108,24 @@ class MainMenu extends Component {
 
         return (
             <View style={{ flex: 1 }}>
-                <View style={titleBarIOS} />
-                <ScrollView style={containerStyle}>
-                    {this.renderHeader()}
-                    <View style={buttonsContainer}>
-                        {this.renderButtons()}
-                    </View>
-                    {this.renderAbout()}
-                </ScrollView>
+                <Animatable.View
+                    useNativeDriver
+                    style={{ flex: 1, opacity: 0 }}
+                    ref={(view) => { this.containerView = view; }}
+                >
+                    <View style={titleBarIOS} />
+                    <ScrollView style={containerStyle}>
+                        {this.renderHeader()}
+                        <View style={buttonsContainer}>
+                            {this.renderButtons()}
+                        </View>
+                    </ScrollView>
+                </Animatable.View>
+                
+                {this.renderAbout()}
+                <Spinner
+                    visible={!loaded}
+                />
             </View>
         );
     }
@@ -175,7 +192,8 @@ const strings = new LocalizedStrings({
 
 const mapStateToProps = (state) => {
     return {
-        categories: state.categories.list
+        categories: state.categories.list,
+        loaded: state.categories.list.length > 0
     };
 };
 
