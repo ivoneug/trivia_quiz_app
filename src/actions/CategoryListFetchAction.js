@@ -34,6 +34,11 @@ const success = (dispatch, data) => {
         };
     });
 
+    items.unshift({
+        id: -1,
+        name: 'Random Category'
+    });
+
     dispatch({
         type: CATEGORY_LIST_FETCH_SUCCESS,
         payload: items

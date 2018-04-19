@@ -70,20 +70,33 @@ class MainMenu extends Component {
         const { categories } = this.props;
         const children = [];
 
-        categories.forEach((category, idx) => {
-            if (idx % 2 === 0) {
-                children.push([]);
-            }
-
-            children[children.length - 1].push((
+        const createCategoryButton = (category) => {
+            return (
                 <CategoryButton
                     key={category.id}
                     onPress={() => this.selectCategory(category.id)}
                     text={category.name}
                     image={require('../images/instagram.png')}
                 />
-            ));
-        });
+            );
+        };
+
+        const randomCategory = categories.find(category => category.id === -1);
+        if (randomCategory) {
+            children.push([createCategoryButton(randomCategory)]);
+        }
+
+        categories.filter(category => category.id !== -1)
+            .forEach((category, idx) => {
+                // for random category we should create additional row
+                if (category.id === -1) return;
+                if (idx % 2 === 0) {
+                    children.push([]);
+                }
+
+                children[children.length - 1]
+                    .push(createCategoryButton(category));
+            });
 
         return children.map((items, idx) => {
             return (
@@ -121,7 +134,7 @@ class MainMenu extends Component {
                         </View>
                     </ScrollView>
                 </Animatable.View>
-                
+
                 {this.renderAbout()}
                 <Spinner
                     visible={!loaded}
