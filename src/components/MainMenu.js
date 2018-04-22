@@ -9,10 +9,11 @@ import {
 import * as Animatable from 'react-native-animatable';
 import LocalizedStrings from 'react-native-localization';
 import { connect } from 'react-redux';
-import { categoryListFetch } from '../actions';
+import { categoryListFetch, difficultySelect } from '../actions';
 import { Spinner } from './common';
 import About from './About';
 import { CategoryButton } from './CategoryButton';
+import { SegmentedControl } from './SegmentedControl';
 
 class MainMenu extends Component {
     componentDidMount() {
@@ -111,12 +112,13 @@ class MainMenu extends Component {
     }
 
     render() {
-        const { loaded } = this.props;
+        const { loaded, difficulty } = this.props;
 
         const {
             titleBarIOS,
             containerStyle,
-            buttonsContainer
+            buttonsContainer,
+            difficultyControl
         } = styles;
 
         return (
@@ -129,6 +131,21 @@ class MainMenu extends Component {
                     <View style={titleBarIOS} />
                     <ScrollView style={containerStyle}>
                         {this.renderHeader()}
+
+                        <SegmentedControl
+                            style={difficultyControl}
+                            sections={[
+                                strings.easy,
+                                strings.medium,
+                                strings.hard,
+                                strings.random
+                            ]}
+                            selectedSection={difficulty}
+                            onSectionChange={(section) => {
+                                this.props.difficultySelect(section);
+                            }}
+                        />
+
                         <View style={buttonsContainer}>
                             {this.renderButtons()}
                         </View>
@@ -193,21 +210,34 @@ const styles = {
     },
     aboutText: {
         fontSize: 16
+    },
+    difficultyControl: {
+        marginLeft: 30,
+        marginRight: 30,
+        marginBottom: 20
     }
 };
 
 const strings = new LocalizedStrings({
     en: {
         header: 'Trivia Quiz',
-        about: 'About'
+        about: 'About',
+        easy: 'Easy',
+        medium: 'Medium',
+        hard: 'Hard',
+        random: 'Random'
     }
 });
 
 const mapStateToProps = (state) => {
     return {
         categories: state.categories.list,
-        loaded: state.categories.list.length > 0
+        loaded: state.categories.list.length > 0,
+        difficulty: state.difficulty
     };
 };
 
-export default connect(mapStateToProps, { categoryListFetch })(MainMenu);
+export default connect(mapStateToProps, {
+    categoryListFetch,
+    difficultySelect
+})(MainMenu);
