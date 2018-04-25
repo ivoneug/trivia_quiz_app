@@ -118,7 +118,8 @@ class MainMenu extends Component {
             titleBarIOS,
             containerStyle,
             buttonsContainer,
-            difficultyControl
+            difficultyControl,
+            difficultySelect
         } = styles;
 
         return (
@@ -132,6 +133,7 @@ class MainMenu extends Component {
                     <ScrollView style={containerStyle}>
                         {this.renderHeader()}
 
+                        <Text style={difficultySelect}>{strings.difficulty}</Text>
                         <SegmentedControl
                             style={difficultyControl}
                             sections={[
@@ -215,6 +217,11 @@ const styles = {
         marginLeft: 30,
         marginRight: 30,
         marginBottom: 20
+    },
+    difficultySelect: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 5
     }
 };
 
@@ -225,7 +232,8 @@ const strings = new LocalizedStrings({
         easy: 'Easy',
         medium: 'Medium',
         hard: 'Hard',
-        random: 'Random'
+        random: 'Random',
+        difficulty: 'Select difficulty'
     }
 });
 
