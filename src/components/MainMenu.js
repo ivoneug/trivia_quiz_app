@@ -12,10 +12,16 @@ import { connect } from 'react-redux';
 import { categoryListFetch, difficultySelect } from '../actions';
 import { Spinner } from './common';
 import About from './About';
+import Quiz from './Quiz';
 import { CategoryButton } from './CategoryButton';
 import { SegmentedControl } from './SegmentedControl';
 
 class MainMenu extends Component {
+    state = {
+        showAbout: false,
+        showQuiz: false
+    }
+
     componentDidMount() {
         this.props.categoryListFetch();
     }
@@ -29,15 +35,26 @@ class MainMenu extends Component {
     }
 
     selectCategory(categoryId) {
+        this.setState({ showQuiz: true });
+    }
 
+    renderQuiz() {
+        return (
+            <Quiz
+                visible={this.state.showQuiz}
+                onBackPress={() => {
+                    this.setState({ showQuiz: false });
+                }}
+            />
+        );
     }
 
     renderAbout() {
         return (
             <About
-                visible={this.props.showAbout}
+                visible={this.state.showAbout}
                 onBackPress={() => {
-                    Actions.refresh({ showAbout: false });
+                    this.setState({ showAbout: false });
                 }}
             />
         );
@@ -57,7 +74,7 @@ class MainMenu extends Component {
                 <TouchableOpacity
                     style={aboutContainer}
                     onPress={() => {
-                        Actions.refresh({ showAbout: true });
+                        this.setState({ showAbout: true });
                     }}
                 >
                     <Text style={aboutText}>{strings.about}</Text>
@@ -154,6 +171,7 @@ class MainMenu extends Component {
                     </ScrollView>
                 </Animatable.View>
 
+                {this.renderQuiz()}
                 {this.renderAbout()}
                 <Spinner
                     visible={!loaded}
