@@ -7,6 +7,7 @@ import {
     Modal,
     Dimensions
 } from 'react-native';
+import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 import LocalizedStrings from 'react-native-localization';
 import { Spinner } from './common';
@@ -152,4 +153,15 @@ const styles = {
     },
 };
 
-export default Quiz;
+const strings = new LocalizedStrings({
+    en: {
+    }
+});
+
+const mapStateToProps = (state) => {
+    return {
+        
+    };
+};
+
+export default connect(mapStateToProps)(Quiz);
