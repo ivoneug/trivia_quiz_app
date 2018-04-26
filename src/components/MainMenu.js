@@ -13,6 +13,7 @@ import {
     categoryListFetch,
     difficultySelect,
     categorySelect,
+    requestToken
 } from '../actions';
 import { Spinner } from './common';
 import About from './About';
@@ -31,10 +32,15 @@ class MainMenu extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { loaded } = nextProps;
+        const { loaded, token } = nextProps;
 
         if (loaded && loaded !== this.props.loaded) {
             this.containerView.fadeIn(300);
+        }
+
+        // request token if it's not obtained
+        if (!token) {
+            this.props.requestToken();
         }
     }
 
@@ -265,12 +271,14 @@ const mapStateToProps = (state) => {
     return {
         categories: state.categories.list,
         loaded: state.categories.list.length > 0,
-        difficulty: state.difficulty
+        difficulty: state.difficulty,
+        token: state.token
     };
 };
 
 export default connect(mapStateToProps, {
     categoryListFetch,
     difficultySelect,
-    categorySelect
+    categorySelect,
+    requestToken
 })(MainMenu);
