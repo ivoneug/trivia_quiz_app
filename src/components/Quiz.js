@@ -66,6 +66,21 @@ class Quiz extends Component {
         );
     }
 
+    renderHeader() {
+        const {
+            headerStyle,
+            headerTextStyle
+        } = headerStyles;
+
+        const { category } = this.props;
+
+        return (
+            <View style={headerStyle}>
+                <Text style={headerTextStyle}>{category.name}</Text>
+            </View>
+        );
+    }
+
     render() {
         const {
             backgroundStyle,
@@ -97,6 +112,7 @@ class Quiz extends Component {
                     style={containerStyle}
                     ref={(view) => { this.contentView = view; }}
                 >
+                    {this.renderHeader()}
                     <View style={mainContainerStyle}>
                     </View>
 
@@ -132,11 +148,12 @@ const styles = {
         borderTopRightRadius: 5,
         backgroundColor: 'white',
         alignItems: 'center',
-
+        overflow: 'hidden'
     },
     mainContainerStyle: {
         flex: 1,
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        marginTop: 64
     },
     backButtonStyle: {
         position: 'absolute',
@@ -153,6 +170,24 @@ const styles = {
     },
 };
 
+const headerStyles = {
+    headerStyle: {
+        width,
+        height: 64,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2
+    },
+    headerTextStyle: {
+        fontSize: 18,
+        textAlign: 'center'
+    }
+};
+
 const strings = new LocalizedStrings({
     en: {
     }
@@ -160,7 +195,7 @@ const strings = new LocalizedStrings({
 
 const mapStateToProps = (state) => {
     return {
-        
+        category: state.categories.selectedCategory
     };
 };
 

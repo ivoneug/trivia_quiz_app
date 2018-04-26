@@ -29,7 +29,7 @@ const styles = {
         justifyContent: 'center'
     },
     textStyle: {
-        fontSize: 16,
+        fontSize: 14,
         textAlign: 'center'
     },
     roundedContainer: {

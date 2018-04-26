@@ -9,7 +9,11 @@ import {
 import * as Animatable from 'react-native-animatable';
 import LocalizedStrings from 'react-native-localization';
 import { connect } from 'react-redux';
-import { categoryListFetch, difficultySelect } from '../actions';
+import {
+    categoryListFetch,
+    difficultySelect,
+    categorySelect,
+} from '../actions';
 import { Spinner } from './common';
 import About from './About';
 import Quiz from './Quiz';
@@ -34,7 +38,9 @@ class MainMenu extends Component {
         }
     }
 
-    selectCategory(categoryId) {
+    onPressCategoryButton(categoryId) {
+        const category = this.props.categories.find(item => item.id === categoryId);
+        this.props.categorySelect(category);
         this.setState({ showQuiz: true });
     }
 
@@ -92,7 +98,7 @@ class MainMenu extends Component {
             return (
                 <CategoryButton
                     key={category.id}
-                    onPress={() => this.selectCategory(category.id)}
+                    onPress={() => this.onPressCategoryButton(category.id)}
                     text={category.name}
                     image={require('../images/instagram.png')}
                 />
@@ -136,7 +142,7 @@ class MainMenu extends Component {
             containerStyle,
             buttonsContainer,
             difficultyControl,
-            difficultySelect
+            difficultySelectStyle
         } = styles;
 
         return (
@@ -150,7 +156,7 @@ class MainMenu extends Component {
                     <ScrollView style={containerStyle}>
                         {this.renderHeader()}
 
-                        <Text style={difficultySelect}>{strings.difficulty}</Text>
+                        <Text style={difficultySelectStyle}>{strings.difficulty}</Text>
                         <SegmentedControl
                             style={difficultyControl}
                             sections={[
@@ -236,7 +242,7 @@ const styles = {
         marginRight: 30,
         marginBottom: 20
     },
-    difficultySelect: {
+    difficultySelectStyle: {
         fontSize: 16,
         textAlign: 'center',
         marginBottom: 5
@@ -265,5 +271,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     categoryListFetch,
-    difficultySelect
+    difficultySelect,
+    categorySelect
 })(MainMenu);
