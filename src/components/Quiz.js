@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 import LocalizedStrings from 'react-native-localization';
+import Question from './Question';
 import { Spinner } from './common';
 
 const { width, height } = Dimensions.get('window');
@@ -33,6 +34,8 @@ Animatable.initializeRegistryWithDefinitions({
 });
 
 class Quiz extends Component {
+    state = { completed: 0 }
+
     renderBackButton() {
         const {
             backButtonStyle,
@@ -81,11 +84,38 @@ class Quiz extends Component {
         );
     }
 
+    renderQuestions() {
+        const { mainContainerStyle } = styles;
+        const { completed } = this.state;
+
+        const question = {
+            index: 0,
+            total: 10,
+            text: 'This is question text. Actually here might be a lot of text!',
+            answers: [
+                { text: 'Answer 1', correct: false },
+                { text: 'Answer 2', correct: false },
+                { text: 'Answer 3', correct: true },
+                { text: 'Answer 4', correct: false }
+            ]
+        };
+
+        return (
+            <View style={mainContainerStyle}>
+                <Question
+                    question={question}
+                    onComplete={() => {
+                        this.setState({ completed: completed + 1 });
+                    }}
+                />
+            </View>
+        );
+    }
+
     render() {
         const {
             backgroundStyle,
-            containerStyle,
-            mainContainerStyle,
+            containerStyle
         } = styles;
 
         let { visible } = this.props;
@@ -113,12 +143,11 @@ class Quiz extends Component {
                     ref={(view) => { this.contentView = view; }}
                 >
                     {this.renderHeader()}
-                    <View style={mainContainerStyle}>
-                    </View>
+                    {this.renderQuestions()}
 
-                    <Spinner
+                    {/* <Spinner
                         visible
-                    />
+                    /> */}
 
                     {this.renderBackButton()}
                 </Animatable.View>
@@ -152,8 +181,7 @@ const styles = {
     },
     mainContainerStyle: {
         flex: 1,
-        justifyContent: 'space-around',
-        marginTop: 64
+        justifyContent: 'space-around'
     },
     backButtonStyle: {
         position: 'absolute',
