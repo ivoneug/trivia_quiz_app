@@ -21,24 +21,6 @@ const Links = {
 };
 
 const { width, height } = Dimensions.get('window');
-Animatable.initializeRegistryWithDefinitions({
-    slideInUpCustom: {
-        from: {
-            translateY: height
-        },
-        to: {
-            translateY: 0
-        }
-    },
-    slideOutDownCustom: {
-        from: {
-            translateY: 0
-        },
-        to: {
-            translateY: height
-        }
-    }
-});
 
 class About extends Component {
     render() {

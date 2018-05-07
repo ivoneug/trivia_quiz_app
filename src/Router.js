@@ -7,9 +7,12 @@ import {
 import SplashScreen from 'react-native-splash-screen';
 import LocalizedStrings from 'react-native-localization';
 import MainMenu from './components/MainMenu';
+import { registerAnimations } from './components/Animations';
 
 class RouterComponent extends Component {
     componentDidMount() {
+        registerAnimations();
+
         setTimeout(() => {
             SplashScreen.hide();
         }, 500);

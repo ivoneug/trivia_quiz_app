@@ -7,28 +7,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
-import LocalizedStrings from 'react-native-localization';
 import { Button } from './common';
-
-const { width, height } = Dimensions.get('window');
-Animatable.initializeRegistryWithDefinitions({
-    slideInLeftCustom: {
-        from: {
-            translateX: width
-        },
-        to: {
-            translateX: 0
-        }
-    },
-    slideOutLeftCustom: {
-        from: {
-            translateX: 0
-        },
-        to: {
-            translateX: -width
-        }
-    }
-});
 
 class Question extends Component {
     state = {
