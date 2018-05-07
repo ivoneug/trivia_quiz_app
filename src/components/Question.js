@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    Image,
-    Dimensions
+    Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
@@ -13,8 +12,8 @@ class Question extends Component {
     state = {
         disabled: false,
         correct: false,
-        width: 0,
-        height: 0
+        resultWidth: 0,
+        resultHeight: 0
     }
 
     renderHeader() {
@@ -41,8 +40,8 @@ class Question extends Component {
         const { text } = this.props.question;
         const {
             correct,
-            width,
-            height
+            resultWidth,
+            resultHeight
         } = this.state;
 
         const resultImage = correct
@@ -54,8 +53,8 @@ class Question extends Component {
                 style={questionContainerStyle}
                 onLayout={(e) => {
                     this.setState({
-                        width: e.nativeEvent.layout.width,
-                        height: e.nativeEvent.layout.height,
+                        resultWidth: e.nativeEvent.layout.width,
+                        resultHeight: e.nativeEvent.layout.height,
                     });
                 }}
             >
@@ -71,8 +70,8 @@ class Question extends Component {
                 <Animatable.View
                     useNativeDriver
                     style={[questionResultContainerStyle, {
-                        width,
-                        height
+                        width: resultWidth,
+                        height: resultHeight
                     }]}
                     ref={(view) => {
                         this.successView = view;
@@ -156,12 +155,13 @@ class Question extends Component {
 
     render() {
         const { containerStyle } = styles;
+        const { index } = this.props.question;
 
         return (
             <Animatable.View
                 animation='slideInLeftCustom'
                 duration={300}
-                delay={1000}
+                delay={index === 0 ? 1000 : 300}
                 useNativeDriver
                 style={containerStyle}
                 ref={(view) => { this.contentView = view; }}
@@ -209,8 +209,8 @@ const styles = {
         opacity: 0
     },
     questionResultImage: {
-        width: 82,
-        height: 82
+        width: 140,
+        height: 140
     },
     buttonsContainer: {
         flex: 1,

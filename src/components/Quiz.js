@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
-import LocalizedStrings from 'react-native-localization';
 import Question from './Question';
+import Results from './Results';
 import { Spinner } from './common';
 
 const { width, height } = Dimensions.get('window');
@@ -36,19 +36,19 @@ Animatable.initializeRegistryWithDefinitions({
 class Quiz extends Component {
     state = { completed: 0 }
 
+    onBackPressAction() {
+        const { onBackPress } = this.props;
+
+        this.contentView.slideOutDownCustom(300)
+            .then(() => this.backgroundView.fadeOut(300))
+            .then(onBackPress);
+    }
+
     renderBackButton() {
         const {
             backButtonStyle,
             backButtonImageStyle
         } = styles;
-
-        const { onBackPress } = this.props;
-
-        const onBackPressAction = () => {
-            this.contentView.slideOutDownCustom(300)
-                .then(() => this.backgroundView.fadeOut(300))
-                .then(onBackPress);
-        };
 
         return (
             <Animatable.View
@@ -58,7 +58,7 @@ class Quiz extends Component {
                 style={backButtonStyle}
             >
                 <TouchableOpacity
-                    onPress={onBackPressAction}
+                    onPress={this.onBackPressAction.bind(this)}
                 >
                     <Image
                         style={backButtonImageStyle}
@@ -89,7 +89,7 @@ class Quiz extends Component {
         const { completed } = this.state;
 
         const question = {
-            index: 0,
+            index: completed,
             total: 10,
             text: 'This is question text. Actually here might be a lot of text!',
             answers: [
@@ -102,12 +102,18 @@ class Quiz extends Component {
 
         return (
             <View style={mainContainerStyle}>
-                <Question
+                {completed <= 1 ? <Question
+                    key={completed}
                     question={question}
                     onComplete={() => {
                         this.setState({ completed: completed + 1 });
                     }}
                 />
+                : <Results
+                    successCount={7}
+                    totalCount={10}
+                    onComplete={this.onBackPressAction.bind(this)}
+                />}
             </View>
         );
     }
@@ -190,7 +196,8 @@ const styles = {
         width: 65,
         height: 65,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        zIndex: 1
     },
     backButtonImageStyle: {
         width: 35,
@@ -208,18 +215,14 @@ const headerStyles = {
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
-        shadowRadius: 2
+        shadowRadius: 2,
+        zIndex: 1
     },
     headerTextStyle: {
         fontSize: 18,
         textAlign: 'center'
     }
 };
-
-const strings = new LocalizedStrings({
-    en: {
-    }
-});
 
 const mapStateToProps = (state) => {
     return {
