@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 
-const CategoryButton = ({ onPress, style, image, text }) => {
+const CategoryButton = ({ onPress, style, image, text, children }) => {
     const {
         containerStyle,
         textStyle,
@@ -15,7 +15,7 @@ const CategoryButton = ({ onPress, style, image, text }) => {
             onPress={onPress}
         >
             <View style={roundedContainer}>
-                {image ? <Image style={imageStyle} source={image} /> : null}
+                {image ? <Image style={imageStyle} source={image} /> : children}
             </View>
             <Text style={textStyle}>{text}</Text>
         </TouchableOpacity>

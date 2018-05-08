@@ -3,6 +3,7 @@ import {
     CATEGORY_LIST_FETCH_SUCCESS,
     CATEGORY_LIST_FETCH_FAILED
 } from './types';
+import categoryImages from '../categoryImages.json';
 
 export const categoryListFetch = () => {
     return (dispatch) => {
@@ -30,13 +31,15 @@ const success = (dispatch, data) => {
 
         return {
             id: item.id,
-            name
+            name,
+            image: categoryImages[item.id]
         };
     });
 
     items.unshift({
         id: -1,
-        name: 'Random Category'
+        name: 'Random Category',
+        image: categoryImages[-1]
     });
 
     dispatch({

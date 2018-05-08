@@ -96,7 +96,10 @@ class MainMenu extends Component {
     }
 
     renderButtons() {
-        const { buttonsRowContainer } = styles;
+        const {
+            buttonsRowContainer,
+            categoryImageStyle
+        } = styles;
         const { categories } = this.props;
         const children = [];
 
@@ -106,8 +109,9 @@ class MainMenu extends Component {
                     key={category.id}
                     onPress={() => this.onPressCategoryButton(category.id)}
                     text={category.name}
-                    image={require('../images/instagram.png')}
-                />
+                >
+                    <Text style={categoryImageStyle}>{category.image}</Text>
+                </CategoryButton>
             );
         };
 
@@ -210,6 +214,12 @@ const styles = {
         marginBottom: 10,
         marginLeft: 25,
         marginRight: 25
+    },
+    categoryImageStyle: {
+        height: 40,
+        fontSize: 32,
+        textAlign: 'center',
+        marginLeft: 3
     },
     headerContainer: {
         height: 100,
