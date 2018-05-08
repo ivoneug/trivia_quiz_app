@@ -45,7 +45,12 @@ class MainMenu extends Component {
     }
 
     onPressCategoryButton(categoryId) {
-        const category = this.props.categories.find(item => item.id === categoryId);
+        let category = this.props.categories.find(item => item.id === categoryId);
+        if (categoryId === -1) {
+            const idx = Math.floor(Math.random() * (this.props.categories.length - 1)) + 1;
+            category = this.props.categories[idx];
+        }
+
         this.props.categorySelect(category);
         this.setState({ showQuiz: true });
     }
