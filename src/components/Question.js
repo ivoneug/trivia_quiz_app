@@ -139,7 +139,7 @@ class Question extends Component {
                         this.contentView.slideOutLeftCustom(300)
                             .then(() => {
                                 if (onComplete) {
-                                    onComplete();
+                                    onComplete(correct);
                                 }
                             });
                     }, 300);
@@ -198,7 +198,8 @@ const styles = {
     questionStyle: {
         fontSize: 20,
         marginLeft: 25,
-        marginRight: 25
+        marginRight: 25,
+        textAlign: 'center'
     },
     questionResultContainerStyle: {
         position: 'absolute',

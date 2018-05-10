@@ -13,7 +13,9 @@ import {
     categoryListFetch,
     difficultySelect,
     categorySelect,
-    requestToken
+    requestToken,
+    getQuiz,
+    clearQuiz
 } from '../actions';
 import { Spinner } from './common';
 import About from './About';
@@ -53,6 +55,13 @@ class MainMenu extends Component {
 
         this.props.categorySelect(category);
         this.setState({ showQuiz: true });
+
+        const {
+            difficulty,
+            token
+        } = this.props;
+
+        this.props.getQuiz(category.id, difficulty, token);
     }
 
     renderQuiz() {
@@ -61,6 +70,7 @@ class MainMenu extends Component {
                 visible={this.state.showQuiz}
                 onBackPress={() => {
                     this.setState({ showQuiz: false });
+                    this.props.clearQuiz();
                 }}
             />
         );
@@ -295,5 +305,7 @@ export default connect(mapStateToProps, {
     categoryListFetch,
     difficultySelect,
     categorySelect,
-    requestToken
+    requestToken,
+    getQuiz,
+    clearQuiz
 })(MainMenu);

@@ -9,33 +9,14 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
+import { answerQuestion } from '../actions';
 import Question from './Question';
 import Results from './Results';
 import { Spinner } from './common';
 
 const { width, height } = Dimensions.get('window');
-Animatable.initializeRegistryWithDefinitions({
-    slideInUpCustom: {
-        from: {
-            translateY: height
-        },
-        to: {
-            translateY: 0
-        }
-    },
-    slideOutDownCustom: {
-        from: {
-            translateY: 0
-        },
-        to: {
-            translateY: height
-        }
-    }
-});
 
 class Quiz extends Component {
-    state = { completed: 0 }
-
     onBackPressAction() {
         const { onBackPress } = this.props;
 
@@ -86,34 +67,39 @@ class Quiz extends Component {
 
     renderQuestions() {
         const { mainContainerStyle } = styles;
-        const { completed } = this.state;
+
+        const {
+            loaded,
+            index,
+            total,
+            items,
+            correctCount
+        } = this.props.quiz;
 
         const question = {
-            index: completed,
-            total: 10,
-            text: 'This is question text. Actually here might be a lot of text!',
-            answers: [
-                { text: 'Answer 1', correct: false },
-                { text: 'Answer 2', correct: false },
-                { text: 'Answer 3', correct: true },
-                { text: 'Answer 4', correct: false }
-            ]
+            index,
+            total,
+            ...items[index]
+        };
+
+        const renderQuizData = () => {
+            return index < total ? <Question
+                key={index}
+                question={question}
+                onComplete={(correct) => {
+                    this.props.answerQuestion(index, correct);
+                }}
+            />
+            : <Results
+                successCount={correctCount}
+                totalCount={total}
+                onComplete={this.onBackPressAction.bind(this)}
+            />;
         };
 
         return (
             <View style={mainContainerStyle}>
-                {completed <= 1 ? <Question
-                    key={completed}
-                    question={question}
-                    onComplete={() => {
-                        this.setState({ completed: completed + 1 });
-                    }}
-                />
-                : <Results
-                    successCount={7}
-                    totalCount={10}
-                    onComplete={this.onBackPressAction.bind(this)}
-                />}
+                {loaded ? renderQuizData() : null}
             </View>
         );
     }
@@ -124,8 +110,11 @@ class Quiz extends Component {
             containerStyle
         } = styles;
 
+        const { quiz } = this.props;
         let { visible } = this.props;
         visible = visible || false;
+
+        console.log(quiz);
 
         return (
             <Modal
@@ -151,9 +140,9 @@ class Quiz extends Component {
                     {this.renderHeader()}
                     {this.renderQuestions()}
 
-                    {/* <Spinner
-                        visible
-                    /> */}
+                    <Spinner
+                        visible={!quiz.loaded}
+                    />
 
                     {this.renderBackButton()}
                 </Animatable.View>
@@ -226,8 +215,11 @@ const headerStyles = {
 
 const mapStateToProps = (state) => {
     return {
-        category: state.categories.selectedCategory
+        category: state.categories.selectedCategory,
+        quiz: state.quiz
     };
 };
 
-export default connect(mapStateToProps)(Quiz);
+export default connect(mapStateToProps, {
+    answerQuestion
+})(Quiz);
