@@ -101,6 +101,7 @@ class Question extends Component {
                 <Animatable.View
                     useNativeDriver
                     key={idx}
+                    correct={answer.correct}
                     ref={(view) => views.push(view)}
                 >
                     <Button
@@ -120,8 +121,8 @@ class Question extends Component {
         const answerSelect = (idx, correct) => {
             this.setState({ disabled: true, correct });
 
-            views.forEach((view, index) => {
-                if (index === idx) {
+            views.forEach((view) => {
+                if (view.props.correct) {
                     return;
                 }
 
