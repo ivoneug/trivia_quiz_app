@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-const Button = ({ onPress, children, color, style, disabled }) => {
-    const { textStyle, buttonStyle } = styles;
+const Button = ({ onPress, children, color, style, textStyle, disabled }) => {
+    const { textBaseStyle, buttonStyle } = styles;
 
     const textColorStyle = color ? { color } : {};
     const buttonColorStyle = color ? { borderColor: color } : {};
@@ -13,19 +13,20 @@ const Button = ({ onPress, children, color, style, disabled }) => {
             style={[buttonStyle, buttonColorStyle, style]}
             disabled={disabled}
         >
-            <Text style={[textStyle, textColorStyle]}>{children}</Text>
+            <Text style={[textBaseStyle, textColorStyle, textStyle]}>{children}</Text>
         </TouchableOpacity>
     );
 };
 
 const styles = {
-    textStyle: {
+    textBaseStyle: {
         alignSelf: 'center',
         color: '#007aff',
         fontSize: 16,
         fontWeight: '600',
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
+        flexWrap: 'wrap'
     },
     buttonStyle: {
         alignSelf: 'stretch',

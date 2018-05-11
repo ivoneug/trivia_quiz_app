@@ -89,7 +89,8 @@ class Question extends Component {
     renderAnswers() {
         const {
             buttonsContainer,
-            buttonStyle
+            buttonStyle,
+            textStyle
         } = styles;
         const { answers } = this.props.question;
         const { onComplete } = this.props;
@@ -156,13 +157,12 @@ class Question extends Component {
 
     render() {
         const { containerStyle } = styles;
-        const { index } = this.props.question;
 
         return (
             <Animatable.View
                 animation='slideInLeftCustom'
                 duration={300}
-                delay={index === 0 ? 1000 : 300}
+                delay={300}
                 useNativeDriver
                 style={containerStyle}
                 ref={(view) => { this.contentView = view; }}
@@ -221,9 +221,19 @@ const styles = {
     },
     buttonStyle: {
         width: 200,
-        height: 40,
+        // height: 40,
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        paddingLeft: 5,
+        paddingRight: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    textStyle: {
+        fontSize: 14,
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center'
     }
 };
 
