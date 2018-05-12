@@ -107,6 +107,7 @@ class Question extends Component {
                 >
                     <Button
                         style={buttonStyle}
+                        textStyle={textStyle}
                         color='rgba(90, 90, 90, 1.0)'
                         disabled={disabled}
                         onPress={() => {
@@ -192,7 +193,7 @@ const styles = {
         textAlign: 'center'
     },
     questionContainerStyle: {
-        flex: 0.8,
+        flex: 0.5,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -224,13 +225,13 @@ const styles = {
         // height: 40,
         marginTop: 10,
         marginBottom: 10,
-        paddingLeft: 5,
-        paddingRight: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
         alignItems: 'center',
         justifyContent: 'center'
     },
     textStyle: {
-        fontSize: 14,
+        fontSize: 13,
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center'
