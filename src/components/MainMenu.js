@@ -16,7 +16,7 @@ import {
     getQuiz,
     clearQuiz
 } from '../actions';
-import { Spinner } from './common';
+import { Spinner, Alert } from './common';
 import About from './About';
 import Quiz from './Quiz';
 import { CategoryButton } from './CategoryButton';
@@ -181,6 +181,23 @@ class MainMenu extends Component {
         });
     }
 
+    renderNetworkAlert() {
+        const { failed } = this.props;
+
+        return (
+            <Alert
+                visible={failed}
+                title={strings.alertTitle}
+                description={strings.alertDescription}
+                buttonText={strings.alertButton}
+                buttonColor='rgba(90, 90, 90, 1.0)'
+                onConfirm={() => {
+                    this.props.categoryListFetch();
+                }}
+            />
+        );
+    }
+
     render() {
         const { loaded, difficulty } = this.props;
 
@@ -243,6 +260,7 @@ class MainMenu extends Component {
                 <Spinner
                     visible={!loaded}
                 />
+                {this.renderNetworkAlert()}
             </View>
         );
     }
@@ -329,7 +347,10 @@ const strings = new LocalizedStrings({
         medium: 'Medium',
         hard: 'Hard',
         random: 'Random',
-        difficulty: 'Select difficulty'
+        difficulty: 'Select difficulty',
+        alertTitle: 'Unable to load data',
+        alertDescription: 'Looks like there is no internet connection at this time.',
+        alertButton: 'Try Again'
     }
 });
 
@@ -337,6 +358,7 @@ const mapStateToProps = (state) => {
     return {
         categories: state.categories.list,
         loaded: state.categories.list.length > 0,
+        failed: state.categories.failed,
         difficulty: state.difficulty,
         token: state.token
     };
