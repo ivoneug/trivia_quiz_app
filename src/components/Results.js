@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
+import LocalizedStrings from 'react-native-localization';
 import { Button } from './common';
 
 class Results extends Component {
@@ -24,20 +25,20 @@ class Results extends Component {
             onComplete
         } = this.props;
 
-        let headerText = '💣 Not so Good 💣';
+        let headerText = strings.bad;
         let resultEmoji = '😭';
 
         const mid = Math.floor(totalCount / 2);
         if (successCount > mid + 1) {
-            headerText = '🎉 Good Job! 🎉';
+            headerText = strings.good;
             resultEmoji = '👏';
         } else if (successCount >= mid - 1) {
-            headerText = '🍭 That\'s Okay! 🍭';
+            headerText = strings.avg;
             resultEmoji = '😏';
         }
 
-        const correctText = `👍 ${successCount} is correct`;
-        const incorrectText = `👎 ${totalCount - successCount} is incorrect`;
+        const correctText = `👍 ${successCount} ${strings.correct}`;
+        const incorrectText = `👎 ${totalCount - successCount} ${strings.incorrect}`;
 
         return (
             <Animatable.View
@@ -72,7 +73,7 @@ class Results extends Component {
                         color='rgba(90, 90, 90, 1.0)'
                         onPress={onComplete}
                     >
-                        {'OK'}
+                        {strings.ok}
                     </Button>
                 </View>
             </Animatable.View>
@@ -112,5 +113,16 @@ const styles = {
         marginBottom: 10
     }
 };
+
+const strings = new LocalizedStrings({
+    en: {
+        bad: '💣 Not so Good 💣',
+        avg: '🍭 That\'s Okay! 🍭',
+        good: '🎉 Good Job! 🎉',
+        correct: 'is correct',
+        incorrect: 'is incorrect',
+        ok: 'OK'
+    }
+});
 
 export default connect()(Results);

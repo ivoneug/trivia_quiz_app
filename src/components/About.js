@@ -271,12 +271,6 @@ const strings = new LocalizedStrings({
         developer: 'developed by Evgeniy Ivon',
         tester: 'tested by Viktor Savelev',
         rate: 'Rate this app'
-    },
-    ru: {
-        title: 'Trivia Quiz',
-        developer: 'разработчик Евгений Ивон',
-        tester: 'тестирование Виктор Савельев',
-        rate: 'Оценить приложение'
     }
 });
 

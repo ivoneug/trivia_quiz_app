@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
+import LocalizedStrings from 'react-native-localization';
 import { Button } from './common';
 
 class Question extends Component {
@@ -25,7 +26,7 @@ class Question extends Component {
 
         return (
             <View style={headerContainerStyle}>
-                <Text style={headerStyle}>{`${index + 1} of ${total}`}</Text>
+                <Text style={headerStyle}>{`${index + 1} ${strings.of} ${total}`}</Text>
             </View>
         );
     }
@@ -237,5 +238,11 @@ const styles = {
         textAlign: 'center'
     }
 };
+
+const strings = new LocalizedStrings({
+    en: {
+        of: 'of'
+    }
+});
 
 export default connect()(Question);
