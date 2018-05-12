@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Actions } from 'react-native-router-flux';
 import {
     View,
     ScrollView,
@@ -37,7 +36,13 @@ class MainMenu extends Component {
         const { loaded, token } = nextProps;
 
         if (loaded && loaded !== this.props.loaded) {
-            this.containerView.fadeIn(300);
+            this.containerView.fadeIn(300).then(() => {
+                this.headerTextView.fadeInDown(600).then(() => {
+                    this.aboutButtonView.bounceIn(1000);
+                });
+                this.difficultyControlView.fadeIn(1000);
+                this.buttonsView.fadeInUpBig(600);
+            });
         }
 
         // request token if it's not obtained
@@ -90,6 +95,7 @@ class MainMenu extends Component {
     renderHeader() {
         const {
             headerContainer,
+            headerAnimationContainer,
             headerText,
             aboutContainer,
             aboutText
@@ -97,15 +103,31 @@ class MainMenu extends Component {
 
         return (
             <View style={headerContainer}>
-                <Text style={headerText}>{strings.header}</Text>
-                <TouchableOpacity
-                    style={aboutContainer}
-                    onPress={() => {
-                        this.setState({ showAbout: true });
+                <Animatable.View
+                    useNativeDriver
+                    style={headerAnimationContainer}
+                    ref={(view) => {
+                        this.headerTextView = view;
                     }}
                 >
-                    <Text style={aboutText}>{strings.about}</Text>
-                </TouchableOpacity>
+                    <Text style={headerText}>{strings.header}</Text>
+                </Animatable.View>
+
+                <Animatable.View
+                    useNativeDriver
+                    style={aboutContainer}
+                    ref={(view) => {
+                        this.aboutButtonView = view;
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ showAbout: true });
+                        }}
+                    >
+                        <Text style={aboutText}>{strings.about}</Text>
+                    </TouchableOpacity>
+                </Animatable.View>
             </View>
         );
     }
@@ -181,24 +203,38 @@ class MainMenu extends Component {
                     <ScrollView style={containerStyle}>
                         {this.renderHeader()}
 
-                        <Text style={difficultySelectStyle}>{strings.difficulty}</Text>
-                        <SegmentedControl
-                            style={difficultyControl}
-                            sections={[
-                                strings.easy,
-                                strings.medium,
-                                strings.hard,
-                                strings.random
-                            ]}
-                            selectedSection={difficulty}
-                            onSectionChange={(section) => {
-                                this.props.difficultySelect(section);
+                        <Animatable.View
+                            style={{ opacity: 0 }}
+                            useNativeDriver
+                            ref={(view) => {
+                                this.difficultyControlView = view;
                             }}
-                        />
+                        >
+                            <Text style={difficultySelectStyle}>{strings.difficulty}</Text>
+                            <SegmentedControl
+                                style={difficultyControl}
+                                sections={[
+                                    strings.easy,
+                                    strings.medium,
+                                    strings.hard,
+                                    strings.random
+                                ]}
+                                selectedSection={difficulty}
+                                onSectionChange={(section) => {
+                                    this.props.difficultySelect(section);
+                                }}
+                            />
+                        </Animatable.View>
 
-                        <View style={buttonsContainer}>
+                        <Animatable.View
+                            style={buttonsContainer}
+                            useNativeDriver
+                            ref={(view) => {
+                                this.buttonsView = view;
+                            }}
+                        >
                             {this.renderButtons()}
-                        </View>
+                        </Animatable.View>
                     </ScrollView>
                 </Animatable.View>
 
@@ -219,7 +255,8 @@ const styles = {
     },
     buttonsContainer: {
         flex: 1,
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        opacity: 0
     },
     buttonsRowContainer: {
         flexDirection: 'row',
@@ -240,6 +277,9 @@ const styles = {
         height: 100,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    headerAnimationContainer: {
+        opacity: 0
     },
     headerText: {
         fontSize: 38
@@ -263,7 +303,8 @@ const styles = {
         width: 80,
         height: 48,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        opacity: 0
     },
     aboutText: {
         fontSize: 16
