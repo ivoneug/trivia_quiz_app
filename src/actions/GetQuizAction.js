@@ -14,7 +14,9 @@ export const getQuiz = (categoryId, difficulty, token) => {
             'medium',
             'hard',
             'any'][difficulty];
-        url += `&difficulty=${difficultyValue}`;
+        if (difficultyValue !== 'any') {
+            url += `&difficulty=${difficultyValue}`;
+        }
 
         let urlWithToken = url;
         if (token) {
