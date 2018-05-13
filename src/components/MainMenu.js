@@ -61,12 +61,17 @@ class MainMenu extends Component {
         this.props.categorySelect(category);
         this.setState({ showQuiz: true });
 
+        this.startQuizRequest(category);
+    }
+
+    startQuizRequest(category) {
         const {
+            selectedCategory,
             difficulty,
             token
         } = this.props;
 
-        this.props.getQuiz(category.id, difficulty, token);
+        this.props.getQuiz(category ? category.id : selectedCategory.id, difficulty, token);
     }
 
     renderQuiz() {
@@ -76,6 +81,9 @@ class MainMenu extends Component {
                 onBackPress={() => {
                     this.setState({ showQuiz: false });
                     this.props.clearQuiz();
+                }}
+                onQuizShouldReload={() => {
+                    this.startQuizRequest();
                 }}
             />
         );
@@ -357,10 +365,11 @@ const strings = new LocalizedStrings({
 const mapStateToProps = (state) => {
     return {
         categories: state.categories.list,
+        selectedCategory: state.categories.selectedCategory,
         loaded: state.categories.list.length > 0,
-        failed: state.categories.failed,
         difficulty: state.difficulty,
-        token: state.token
+        token: state.token,
+        failed: state.categories.failed
     };
 };
 

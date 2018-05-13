@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
+import LocalizedStrings from 'react-native-localization';
 import { answerQuestion } from '../actions';
 import Question from './Question';
 import Results from './Results';
-import { Spinner } from './common';
+import { Spinner, Alert } from './common';
 
 const { width, height } = Dimensions.get('window');
 
@@ -30,6 +31,7 @@ class Quiz extends Component {
             backButtonStyle,
             backButtonImageStyle
         } = styles;
+        const { failed } = this.props;
 
         return (
             <Animatable.View
@@ -40,6 +42,7 @@ class Quiz extends Component {
             >
                 <TouchableOpacity
                     onPress={this.onBackPressAction.bind(this)}
+                    disabled={failed}
                 >
                     <Image
                         style={backButtonImageStyle}
@@ -104,6 +107,23 @@ class Quiz extends Component {
         );
     }
 
+    renderNetworkAlert() {
+        const { failed } = this.props;
+
+        return (
+            <Alert
+                visible={failed}
+                title={strings.alertTitle}
+                description={strings.alertDescription}
+                buttonText={strings.alertButton}
+                buttonColor='rgba(90, 90, 90, 1.0)'
+                onConfirm={() => {
+                    this.props.onQuizShouldReload();
+                }}
+            />
+        );
+    }
+
     render() {
         const {
             backgroundStyle,
@@ -145,6 +165,7 @@ class Quiz extends Component {
                     />
 
                     {this.renderBackButton()}
+                    {this.renderNetworkAlert()}
                 </Animatable.View>
             </Modal>
         );
@@ -213,10 +234,19 @@ const headerStyles = {
     }
 };
 
+const strings = new LocalizedStrings({
+    en: {
+        alertTitle: 'Unable to load data',
+        alertDescription: 'Looks like there is no internet connection at this time.',
+        alertButton: 'Try Again'
+    }
+});
+
 const mapStateToProps = (state) => {
     return {
         category: state.categories.selectedCategory,
-        quiz: state.quiz
+        quiz: state.quiz,
+        failed: state.quiz.failed
     };
 };
 
