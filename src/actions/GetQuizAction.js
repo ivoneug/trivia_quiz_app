@@ -7,21 +7,27 @@ import {
 
 export const getQuiz = (categoryId, difficulty, token) => {
     return (dispatch) => {
-        let url = `https://opentdb.com/api.php?amount=10&category=${categoryId}&type=multiple`;
+        // construct URL
+        const getUrl = (difficulty, token) => {
+            let url = `https://opentdb.com/api.php?amount=10&category=${categoryId}&type=multiple`;
 
-        const difficultyValue = [
-            'easy',
-            'medium',
-            'hard',
-            'any'][difficulty];
-        if (difficultyValue !== 'any') {
-            url += `&difficulty=${difficultyValue}`;
-        }
+            if (difficulty != null) {
+                const difficultyValue = [
+                    'easy',
+                    'medium',
+                    'hard',
+                    'any'][difficulty];
+                if (difficultyValue !== 'any') {
+                    url += `&difficulty=${difficultyValue}`;
+                }
+            }
 
-        let urlWithToken = url;
-        if (token) {
-            urlWithToken += `&token=${token}`;
-        }
+            if (token) {
+                url += `&token=${token}`;
+            }
+
+            return url;
+        };
 
         const request = (requestUrl) => {
             axios.get(requestUrl)
@@ -31,6 +37,7 @@ export const getQuiz = (categoryId, difficulty, token) => {
                         // it means that we're out of questions for this token
                         // so drop the token & make a new request without it
                         const code = response.data.response_code;
+                        const results = response.data.results;
                         if (code === 3 || code === 4) {
                             // clear token (it will be requested next time
                             // user visit main screen)
@@ -39,17 +46,24 @@ export const getQuiz = (categoryId, difficulty, token) => {
                                 payload: null
                             });
 
-                            request(url);
+                            // clear token inplace
+                            token = null;
+                            request(getUrl(difficulty));
+                            return;
+                        } else if (results.length === 0) {
+                            // when there is no results for selected difficulty
+                            // make a new request without difficulty
+                            request(getUrl(null, token));
                             return;
                         }
 
-                        success(dispatch, response.data.results);
+                        success(dispatch, results);
                     } else {
                         failed(dispatch);
                     }
                 }).catch(() => { failed(dispatch); });
         };
-        request(urlWithToken);
+        request(getUrl(difficulty, token));
     };
 };
 
