@@ -1303,6 +1303,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.bibobo.trivia-quiz-app";
 				PRODUCT_NAME = trivia_quiz_app;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1325,6 +1326,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.bibobo.trivia-quiz-app";
 				PRODUCT_NAME = trivia_quiz_app;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
