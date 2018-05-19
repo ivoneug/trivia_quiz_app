@@ -17,8 +17,7 @@ const Links = {
     GOOGLE: 'https://plus.google.com/118198258710549956750',
     FACEBOOK: 'https://www.facebook.com/ivoneug',
     LINKEDIN: 'https://www.linkedin.com/in/evgeniy-ivon-4b2883b7/',
-    INSTAGRAM: 'https://www.instagram.com/ivoneug/',
-    LINKEDIN_VIKTOR: 'https://www.linkedin.com/in/viktor-savelev-66a5b2114/'
+    INSTAGRAM: 'https://www.instagram.com/ivoneug/'
 };
 
 const { width, height } = Dimensions.get('window');
@@ -118,19 +117,6 @@ class About extends Component {
                                         }}
                                     >
                                         <Image source={require('../images/instagram.png')} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                            <View style={testerContainerStyle}>
-                                <Text style={normalTextStyle}>{strings.tester}</Text>
-                                <View style={socialButtonsContainer}>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            Linking.openURL(Links.LINKEDIN_VIKTOR);
-                                        }}
-                                    >
-                                        <Image source={require('../images/linkedin.png')} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
