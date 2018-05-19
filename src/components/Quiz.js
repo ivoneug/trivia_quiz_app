@@ -134,8 +134,6 @@ class Quiz extends Component {
         let { visible } = this.props;
         visible = visible || false;
 
-        console.log(quiz);
-
         return (
             <Modal
                 transparent

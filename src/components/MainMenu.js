@@ -21,15 +21,12 @@ import About from './About';
 import Quiz from './Quiz';
 import { CategoryButton } from './CategoryButton';
 import { SegmentedControl } from './SegmentedControl';
+import MainPlaceholder from './MainPlaceholder';
 
 class MainMenu extends Component {
     state = {
         showAbout: false,
         showQuiz: false
-    }
-
-    componentDidMount() {
-        this.props.categoryListFetch();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -269,6 +266,12 @@ class MainMenu extends Component {
                     visible={!loaded}
                 />
                 {this.renderNetworkAlert()}
+
+                <MainPlaceholder
+                    onFinish={() => {
+                        this.props.categoryListFetch();
+                    }}
+                />
             </View>
         );
     }
