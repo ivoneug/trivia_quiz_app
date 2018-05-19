@@ -90,11 +90,11 @@ const styles = {
 
     },
     selectedText: {
-        fontSize: 16,
+        fontSize: 14,
         color: 'white'
     },
     deselectedText: {
-        fontSize: 16,
+        fontSize: 14,
         color: 'rgba(128, 128, 128, 1)'
     }
 };
