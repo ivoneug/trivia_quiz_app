@@ -11,6 +11,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import LocalizedStrings from 'react-native-localization';
 import { openAppPageInStore } from '../AppStoreInteraction';
+import { LogoPlaceholder } from './LogoPlaceholder';
 
 const Links = {
     GOOGLE: 'https://plus.google.com/118198258710549956750',
@@ -80,7 +81,7 @@ class About extends Component {
                             useNativeDriver
                             style={headerStyle}
                         >
-                            <Image source={require('../images/sunglasses-black.png')} />
+                            <LogoPlaceholder />
                             <Text style={headerTextStyle}>{strings.title}</Text>
                         </Animatable.View>
                         <Animatable.View animation='fadeIn' delay={900}>
