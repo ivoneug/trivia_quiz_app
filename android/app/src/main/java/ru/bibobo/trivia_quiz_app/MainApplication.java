@@ -1,4 +1,4 @@
-package com.trivia_quiz_app;
+package ru.bibobo.trivia_quiz_app;
 
 import android.app.Application;
 
