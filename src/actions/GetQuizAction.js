@@ -1,4 +1,5 @@
 import axios from 'axios';
+import 'babel-polyfill';
 import {
     GET_QUIZ_SUCCESS,
     GET_QUIZ_FAILED,
