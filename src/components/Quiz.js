@@ -159,6 +159,7 @@ class Quiz extends Component {
                     {this.renderQuestions()}
 
                     <Spinner
+                        color='#000000'
                         visible={!quiz.loaded}
                     />
 
@@ -205,6 +206,7 @@ const styles = {
         height: 65,
         alignItems: 'center',
         justifyContent: 'center',
+        elevation: 1,
         zIndex: 1
     },
     backButtonImageStyle: {
@@ -224,6 +226,7 @@ const headerStyles = {
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
+        elevation: 1,
         zIndex: 1
     },
     headerTextStyle: {

@@ -3,7 +3,8 @@ import {
     View,
     ScrollView,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LocalizedStrings from 'react-native-localization';
@@ -140,10 +141,16 @@ class MainMenu extends Component {
     renderButtons() {
         const {
             buttonsRowContainer,
-            categoryImageStyle
+            categoryImageStyle,
+            categoryImageIOSStyle
         } = styles;
         const { categories } = this.props;
         const children = [];
+
+        const categoryTextStyle = [categoryImageStyle];
+        if (Platform.OS === 'ios') {
+            categoryTextStyle.push(categoryImageIOSStyle);
+        }
 
         const createCategoryButton = (category) => {
             return (
@@ -152,7 +159,7 @@ class MainMenu extends Component {
                     onPress={() => this.onPressCategoryButton(category.id)}
                     text={category.name}
                 >
-                    <Text style={categoryImageStyle}>{category.image}</Text>
+                    <Text style={categoryTextStyle}>{category.image}</Text>
                 </CategoryButton>
             );
         };
@@ -209,10 +216,16 @@ class MainMenu extends Component {
         const {
             titleBarIOS,
             containerStyle,
+            containerIOSStyle,
             buttonsContainer,
             difficultyControl,
             difficultySelectStyle
         } = styles;
+
+        const containerStyles = [containerStyle];
+        if (Platform.OS === 'ios') {
+            containerStyles.push(containerIOSStyle);
+        }
 
         return (
             <View style={{ flex: 1 }}>
@@ -221,8 +234,8 @@ class MainMenu extends Component {
                     style={{ flex: 1, opacity: 0 }}
                     ref={(view) => { this.containerView = view; }}
                 >
-                    <View style={titleBarIOS} />
-                    <ScrollView style={containerStyle}>
+                    {Platform.OS === 'ios' ? <View style={titleBarIOS} /> : null}
+                    <ScrollView style={containerStyles}>
                         {this.renderHeader()}
 
                         <Animatable.View
@@ -263,6 +276,7 @@ class MainMenu extends Component {
                 {this.renderQuiz()}
                 {this.renderAbout()}
                 <Spinner
+                    color='#000000'
                     visible={!loaded}
                 />
                 {this.renderNetworkAlert()}
@@ -279,7 +293,9 @@ class MainMenu extends Component {
 
 const styles = {
     containerStyle: {
-        flex: 1,
+        flex: 1
+    },
+    containerIOSStyle: {
         marginTop: 20
     },
     buttonsContainer: {
@@ -300,7 +316,11 @@ const styles = {
         height: 40,
         fontSize: 32,
         textAlign: 'center',
-        marginLeft: 3
+        marginBottom: 3
+    },
+    categoryImageIOSStyle: {
+        marginLeft: 3,
+        marginBottom: 0
     },
     headerContainer: {
         height: 100,
