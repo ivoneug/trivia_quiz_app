@@ -132,7 +132,7 @@ class About extends Component {
                         <View style={rateShareContainer}>
                             <TouchableOpacity
                                 onPress={() => {
-                                    openAppPageInStore('id1360611267', 'ru.bibobo.reading_podcasts');
+                                    openAppPageInStore('id1389472639', 'ru.bibobo.trivia_quiz_app');
                                 }}
                             >
                                 <View style={rateShareButtonStyle}>
